@@ -41,7 +41,7 @@ console.log(searchParamsObj,newUser)
     setIsLoaded(true)
   }, [])
 
-  if(!isLoaded) return <div>Loading...</div>;
+  if(!isLoaded || !clientRef.current || !callRef.current) return <div>Loading...</div>;
   
   return (
     <>
