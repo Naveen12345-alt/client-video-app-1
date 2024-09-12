@@ -22,14 +22,16 @@ export default function App() {
   const callRef = useRef<Call|null>(null);
 
   useEffect(() => {
-    const path = window.location.pathname;
-    const customCallId = path.split('/').pop() || callId;
+    const params = new URLSearchParams(window.location.search);
+    const searchParamsObj:Record<string,string> = {};
+    params.forEach((value, key) => {
+      searchParamsObj[key] = value;
+    });
 
-    console.log(customCallId,"callId")
-
-
-    clientRef.current = new StreamVideoClient({ apiKey, user, token });
-    callRef.current = clientRef.current.call('default', customCallId);
+const newUser = "userName" in searchParamsObj?{...user,name:searchParamsObj.userName}:user;
+console.log(searchParamsObj,newUser)
+    clientRef.current = new StreamVideoClient({ apiKey, user:newUser, token });
+    callRef.current = clientRef.current.call('default', searchParamsObj.callId || callId);
     
     callRef.current.on("call.ended",()=>console.log(1))
     callRef.current.microphone.enable()
