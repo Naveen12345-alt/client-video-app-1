@@ -10,7 +10,7 @@ const callId = 'csb-212eb213fb38d';
 // set up the user object
 const user: User = {
   id: userId,
-  name: 'Herprit',
+  name: 'Oliver',
   image: 'https://getstream.io/random_svg/?id=oliver&name=Oliver',
 };
 
@@ -20,6 +20,7 @@ export default function App() {
 
   const clientRef = useRef<StreamVideoClient|null>(null);
   const callRef = useRef<Call|null>(null);
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -36,9 +37,11 @@ console.log(searchParamsObj,newUser)
     callRef.current.on("call.ended",()=>console.log(1))
     callRef.current.microphone.enable()
     callRef.current.join({ create: true });  
+
+    setIsLoaded(true)
   }, [])
 
-  if(!clientRef.current || !callRef.current) return <div>Loading...</div>;
+  if(!isLoaded) return <div>Loading...</div>;
   
   return (
     <>
